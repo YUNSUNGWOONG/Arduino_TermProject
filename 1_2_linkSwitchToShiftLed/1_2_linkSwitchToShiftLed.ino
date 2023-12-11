@@ -28,28 +28,30 @@ void setup() {
 
 void loop() {
   
-  if (digitalRead(sw1) == LOW) {	  // første etasje
+  if (digitalRead(sw1) == LOW) 
+  {	 
     shiftLeft();
   }
 
-  if (digitalRead(sw2) == LOW)      // andre etasje
+  if (digitalRead(sw2) == LOW)      
   {	
     shiftLeft();
   }
 
-  if (digitalRead(sw3) == LOW)      // tredje etasje
+  if (digitalRead(sw3) == LOW)      
   {	
     shiftLeft();
   }
   
-   if (digitalRead(sw4) == LOW)     // fjerde etasje
-   {	
+  if (digitalRead(sw4) == LOW) 
+  {
     shiftRight();
-    }
+  }   
+  
  
-   if (digitalRead(sw5) == LOW)     // femte etsje
-   {	
-    shiftRight();
+  if (digitalRead(sw5) == LOW)     
+  {	
+  shiftRight();
   }
 
 }
@@ -101,6 +103,9 @@ void shiftLeft(){
   delay(300);
 
   digitalWrite(latchPin, LOW);
+  shiftOut(dataPin, shiftPin, LSBFIRST, 0b00000000);
+  digitalWrite(latchPin, HIGH);
+  
 }
 
 void shiftRight(){
@@ -148,4 +153,8 @@ void shiftRight(){
   shiftOut(dataPin, shiftPin, LSBFIRST, 0b00000001);
   digitalWrite(latchPin, HIGH);
   delay(300);
+
+  digitalWrite(latchPin, LOW);
+  shiftOut(dataPin, shiftPin, LSBFIRST, 0b00000000);
+  digitalWrite(latchPin, HIGH);
 }
