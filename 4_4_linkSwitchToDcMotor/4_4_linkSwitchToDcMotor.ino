@@ -1,28 +1,41 @@
-#include<Servo.h>
-Servo myservo;
+int motor_1 = 3;
+int motor_2 = 4;
 
-int pos = 0;
-int servoPin = 6;
+int gLedPin = 8;
+int buttonPin = 2;
 
-void setup(){
-  pinMode(servoPin, OUTPUT);
-  myservo.attach(6);
+volatile int buttonState = LOW; // Declare buttonState as volatile
+
+void setup() {
+  // DC_MOTOR
+  pinMode(motor_1, OUTPUT);
+  pinMode(motor_2, OUTPUT);
+  // LED_SWITCH
+ 
+  pinMode(gLedPin, OUTPUT);
+  pinMode(buttonPin, INPUT);
+
+  // INTERRUPT
+  attachInterrupt(digitalPinToInterrupt(buttonPin), buttonRead, CHANGE);
 }
 
-void loop(){
-  for(pos=0; pos<=180; pos +=1)
-  {
-    myservo.write(pos);
-    delay(10);
-  }
-  delay(1000);
+void loop() {
   
-  for(pos = 180; pos>=0; pos--)
-  {
-    myservo.write(pos);
-    delay(10);
+
+  // Check button state in the loop and spin motor accordingly
+  if (buttonState == HIGH) {
+    spinClockwiseFor1Sec();
   }
-  delay(1000);
-  
 }
-//https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=boilmint7&logNo=221897920640
+
+void buttonRead() {
+  buttonState = digitalRead(buttonPin);
+  digitalWrite(gLedPin, buttonState);
+}
+
+void spinClockwiseFor1Sec() {
+  digitalWrite(motor_1, HIGH);
+  digitalWrite(motor_2, LOW);
+  delay(1000); // Spin for 1 second
+  digitalWrite(motor_1, LOW);
+}
